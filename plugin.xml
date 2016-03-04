@@ -1,5 +1,7 @@
 <oimplugins xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <plugins pluginpoint="oracle.iam.platform.kernel.spi.EventHandler">
-        <plugin name="TelephoneNumberValidator" pluginclass="com.gis.oim.veg.validators.TelephoneNumberValidator" version="1.0">
-        </plugin></plugins>
+        <plugin name="TelephoneNumberValidator" pluginclass="com.gis.oim.veg.validators.TelephoneNumberValidator"
+                version="1.0">
+        </plugin>
+    </plugins>
 </oimplugins>

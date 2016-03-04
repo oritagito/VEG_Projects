@@ -8,8 +8,7 @@ import oracle.iam.platform.kernel.ValidationFailedException;
  * Created by vasilev-e on 25.02.2016.
  */
 
-public class MobileNumberADValidator
-{
+public class MobileNumberADValidator {
     private static final ODLLogger logger = ODLLogger.getODLLogger(MobileNumberADValidator.class.getName());
     private static final String TELEPHONE_NUMBER_REGEX = "^(\\([0-9]{3}\\)|[0-9]{3}-)[0-9]{3}-[0-9]{4}$";
 

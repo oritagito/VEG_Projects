@@ -12,29 +12,27 @@ import java.util.regex.Pattern;
  * Created by vasilev-e on 25.02.2016.
  */
 
-public class TelephoneNumberADValidator
-{
+public class TelephoneNumberADValidator {
     // Logger
     private static final ODLLogger LOGGER = ODLLogger.getODLLogger(TelephoneNumberADValidator.class.getName());
 
     /**
      * Validates if the incoming data has the proper phone number format:
      * +X-XXX-XXX-XXXX
-     * @param hmUserDetails         HashMap<String,Object> containing parent data details
-     * @param hmEntitlementDetails  HashMap<String,Object> containing child data details
-     * @param sField                Name of the reconciliation field being validated
+     *
+     * @param hmUserDetails        HashMap<String,Object> containing parent data details
+     * @param hmEntitlementDetails HashMap<String,Object> containing child data details
+     * @param sField               Name of the reconciliation field being validated
      * @return true if target field passes validation; false otherwise
      */
-    public boolean validate(HashMap<String,Object> hmUserDetails, HashMap<String,Object> hmEntitlementDetails, String sField)
-    {
+    public boolean validate(HashMap<String, Object> hmUserDetails, HashMap<String, Object> hmEntitlementDetails, String sField) {
         LOGGER.log(ODLLevel.NOTIFICATION, "Parameters: Parent Data = {0}, Child Data = {1}, Field = {2}", new Object[]{hmUserDetails, hmEntitlementDetails, sField});
 
         boolean valid = false;
         String phoneNumber = (String) hmUserDetails.get(sField); // Get value using the reconciliation field name
 
         // Empty value case
-        if(phoneNumber == null || "".equalsIgnoreCase(phoneNumber))
-        {
+        if (phoneNumber == null || "".equalsIgnoreCase(phoneNumber)) {
             LOGGER.log(ODLLevel.NOTIFICATION, "No data provided. Pass validation.");
             return true;
         }
@@ -45,8 +43,7 @@ public class TelephoneNumberADValidator
         valid = matcher.matches(); // Checks input against the regex
         LOGGER.log(ODLLevel.NOTIFICATION, "Is {0} = {1} valid? {2}", new Object[]{sField, phoneNumber, valid});
 
-        if (!valid)
-        {
+        if (!valid) {
             throw new ValidationFailedException("Format of Telephone Number must be: " + phoneNumberRegex);
         }
 
