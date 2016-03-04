@@ -1,0 +1,52 @@
+<component name="libraryTable">
+  <library name="iam-consoles-common">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/iam-consoles-common.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/iam-consoles-faces.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/iam-platform-async.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/iam-platform-auth-client.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/iam-platform-auth-server.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/iam-platform-authopss-service.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/iam-platform-canonic.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/iam-platform-configmbeans.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/iam-platform-context.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/iam-platform-entitymgr.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/iam-platform-kernel.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/iam-platform-pluginframework.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/iam-platform-utils.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/iam-platform-workflowservice.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/oimclient.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/oimdbprovider.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/ojdl.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/ojdl2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/wlfullclient.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/XellerateClient.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/xlAdapterUtilities.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/xlAPI.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/xlAttestation.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/xlAuditor.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/xlBackOfficeBeans.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/xlBackofficeClient.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/xlCache.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/xlCopyUtil.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/xlDataObjectBeans.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/xlDataObjects.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/xlDDM.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/xlFvcUtil.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/xlGenConnector.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/xliGCProviders.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/xlInputPreprocessor.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/xlLogger.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/xlRemoteManager.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/xlScheduler.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/xlUtils.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/xlVO.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/xlWSClient.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/xlWSCustomClient.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/wlfullclient.jar!/" />
+    </SOURCES>
+  </library>
+</component>

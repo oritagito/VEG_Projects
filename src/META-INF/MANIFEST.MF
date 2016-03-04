@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Class-Path: iam-consoles-common.jar iam-consoles-faces.jar iam-platfor
+ m-async.jar iam-platform-auth-client.jar iam-platform-auth-server.jar
+  iam-platform-authopss-service.jar iam-platform-canonic.jar iam-platf
+ orm-configmbeans.jar iam-platform-context.jar iam-platform-entitymgr.
+ jar iam-platform-kernel.jar iam-platform-pluginframework.jar iam-plat
+ form-utils.jar iam-platform-workflowservice.jar oimclient.jar oimdbpr
+ ovider.jar ojdl.jar ojdl2.jar wlfullclient.jar XellerateClient.jar xl
+ AdapterUtilities.jar xlAPI.jar xlAttestation.jar xlAuditor.jar xlBack
+ OfficeBeans.jar xlBackofficeClient.jar xlCache.jar xlCopyUtil.jar xlD
+ ataObjectBeans.jar xlDataObjects.jar xlDDM.jar xlFvcUtil.jar xlGenCon
+ nector.jar xliGCProviders.jar xlInputPreprocessor.jar xlLogger.jar xl
+ RemoteManager.jar xlScheduler.jar xlUtils.jar xlVO.jar xlWSClient.jar
+  xlWSCustomClient.jar
+

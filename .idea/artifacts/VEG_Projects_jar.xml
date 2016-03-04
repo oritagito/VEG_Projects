@@ -1,0 +1,26 @@
+<component name="ArtifactManager">
+  <artifact name="VEG_Projects:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/VEG_Projects</output-path>
+    <root id="root">
+      <element id="archive" name="VEG_Projects.zip">
+        <element id="directory" name="lib">
+          <element id="directory" name="lib">
+            <element id="library" level="project" name="iam-consoles-common" />
+          </element>
+          <element id="archive" name="VEG_Projects.jar">
+            <element id="module-output" name="VEG_Projects" />
+          </element>
+        </element>
+        <element id="file-copy" path="$PROJECT_DIR$/plugin.xml" />
+      </element>
+      <element id="directory" name="VEG_Projects_JAR">
+        <element id="archive" name="VEG_Projects.jar">
+          <element id="module-output" name="VEG_Projects" />
+        </element>
+      </element>
+      <element id="directory" name="handlers">
+        <element id="dir-copy" path="$PROJECT_DIR$/handlers" />
+      </element>
+    </root>
+  </artifact>
+</component>
