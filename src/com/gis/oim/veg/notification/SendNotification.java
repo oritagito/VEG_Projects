@@ -42,9 +42,7 @@ public class SendNotification {
             params.put("recipientsID",Arrays.asList(recipients));
             params.put("recipientsEMAIL",Arrays.asList(getRecipientUserEmail(userKey)));
             sendNotificationEvent(recipients, templateName, params);
-        }
-        catch (Exception ex)
-        {
+        } catch (Exception ex) {
             log.log(Level.SEVERE, "Exception as find user with key: " + userKey, ex);
             return "API_ERROR";
         }
@@ -65,8 +63,7 @@ public class SendNotification {
         loginSet.toArray(recipients);
 
         NotificationService notService = (NotificationService) Platform.getService(NotificationService.class);
-        if ((recipients.length != 0) && (recipients[0] != null))
-        {
+        if ((recipients.length != 0) && (recipients[0] != null)) {
             log.finest("name template : " + templateName);
             log.finest("user for send message : " + Arrays.asList(recipients));
 
@@ -75,17 +72,12 @@ public class SendNotification {
             event.setTemplateName(templateName);
             event.setSender("NOTIAM");
             event.setParams(params);
-            try
-            {
+            try {
                 notService.notify(event);
                 log.info("The notice was sent.");
-            }
-            catch (TemplateNotFoundException ex)
-            {
+            } catch (TemplateNotFoundException ex) {
                 log.log(Level.SEVERE, "Not found Template with name = " + templateName, ex);
-            }
-            catch (SuperException ex)
-            {
+            } catch (SuperException ex) {
                 log.log(Level.SEVERE, "Error as sending notification", ex);
             }
         }
@@ -124,24 +116,29 @@ public class SendNotification {
             throws NoSuchUserException, UserLookupException, AccessDeniedException {
 
         UserManager usrMgr = Platform.getService(UserManager.class);
-        User user = null;
+        User user = usrMgr.getDetails(userKey, null, false);
         String userId = null;
-        Set<String> userRetAttrs = new HashSet<String>();
-        userRetAttrs.add(MANAGER_KEY.getId());
-        userRetAttrs.add(EMAIL.getId());
         User manager = null;
         String managerId = null;
         String managerKey = null;
-        Set<String> managerRetAttrs = new HashSet<String>();
-        managerRetAttrs.add(EMAIL.getId());
-        user = usrMgr.getDetails(userKey, userRetAttrs, false);
-        userId = (user.getAttribute(EMAIL.getId()).toString() != null) ? (user.getAttribute(EMAIL.getId()).toString()) : "Email not found";
-        List<String> userIds = new ArrayList<String>();
+        List<String> userIds = new ArrayList<>();
+        try {
+            userId = user.getAttribute(EMAIL.getId()).toString();
+        } catch (NullPointerException ex) {
+            log.warning("EMAIL for user: " + userKey + " not found");
+            userId = "No".toString();
+        }
+
         userIds.add(userId);
         if (user.getAttribute(MANAGER_KEY.getId()) != null) {
             managerKey = user.getAttribute(MANAGER_KEY.getId()).toString();
-            manager = usrMgr.getDetails(managerKey, managerRetAttrs, false);
-            managerId = (manager.getAttribute(EMAIL.getId()) != null) ? (manager.getAttribute(EMAIL.getId()).toString()) : "Manager Email not found";
+            manager = usrMgr.getDetails(managerKey, null, false);
+            try {
+                managerId = manager.getAttribute(EMAIL.getId()).toString();
+            } catch (NullPointerException ex) {
+                log.warning("EMAIL for user: " + managerKey + " not found");
+                managerId = "No".toString();
+            }
             userIds.add(managerId);
         }
         String[] recipientIDs = userIds.toArray(new String[0]);
