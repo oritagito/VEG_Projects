@@ -26,12 +26,12 @@ public class VEGUserName implements UserNamePolicy{
         String lastName = map.get("Last Name");
         String middleName = map.get("Middle Name");
 
-        boolean isFirstName = (firstName != null || firstName.length() != 0) ? true : false;
-        boolean isMiddleName = (middleName != null || middleName.length() != 0) ? true : false;
+        boolean isFirstName = (firstName == null || firstName.length() == 0) ? false : true;
+        boolean isMiddleName = (middleName == null || middleName.length() == 0) ? false : true;
 
         if (isFirstName) {
             if (isContainInvalidCharacters(firstName)) {
-                UserNameGenerationException exception = new UserNameGenerationException("First Name is Invalid", "INVALIDFORSTNAME");
+                UserNameGenerationException exception = new UserNameGenerationException("First Name is Invalid", "INVALID_FIRST_NAME");
                 throw exception;
             }
             firstName = cyrillicToLatinResult(firstName.toUpperCase());
@@ -39,14 +39,14 @@ public class VEGUserName implements UserNamePolicy{
 
         if (isMiddleName) {
             if (isContainInvalidCharacters(middleName)) {
-                UserNameGenerationException exception = new UserNameGenerationException("Middle Name is Invalid", "INVALIDMIDDLENAME");
+                UserNameGenerationException exception = new UserNameGenerationException("Middle Name is Invalid", "INVALID_MIDDLE_NAME");
                 throw exception;
             }
             middleName = cyrillicToLatinResult(middleName.toUpperCase());
         }
 
         if (isContainInvalidCharacters(lastName)) {
-            UserNameGenerationException exception = new UserNameGenerationException("Last Name is Invalid", "INVALIDLASTNAME");
+            UserNameGenerationException exception = new UserNameGenerationException("Last Name is Invalid", "INVALID_LAST_NAME");
             throw exception;
         }
         lastName = cyrillicToLatinResult(lastName.toUpperCase());
@@ -54,13 +54,13 @@ public class VEGUserName implements UserNamePolicy{
         if (isFirstName && isMiddleName) {
             String firstInitial = firstName.substring(0, 1);
             String middleInitial = middleName.substring(0, 1);
-            userName = (lastName.concat(firstInitial)).concat(middleInitial);
+            userName = ((lastName.concat(".")).concat(firstInitial)).concat(middleInitial);
             userName = UserNameGenerationUtil.trimWhiteSpaces(userName);
 
             if (UserNamePolicyUtil.isUserExists(userName) || (UserNamePolicyUtil.isUserNameReserved(userName))) {
                 String baseName = userName;
                 boolean userNameGenerated = false;
-                for (int i = 1; i < 10; i++) {
+                for (int i = 1; i < 100; i++) {
                     userName = generateNextName(baseName, firstName, middleName, i);
                     if (UserNameGenerationUtil.isUserNameExistingOrReserved(userName))
                         continue;
@@ -68,18 +68,18 @@ public class VEGUserName implements UserNamePolicy{
                     break;
                 }
                 if (!userNameGenerated)
-                    throw  new UserNameGenerationException("Failed To Generate User Name", "GENERATEUSERNAMEFAILED");
+                    throw  new UserNameGenerationException("Failed To Generate User Name", "GENERATE_USER_NAME_FAILED");
             }
         }
         else if (!isFirstName && isMiddleName) {
             String middleInitial = middleName.substring(0, 1);
-            userName = lastName.concat(middleInitial);
+            userName = (lastName.concat(".")).concat(middleInitial);
             userName = UserNameGenerationUtil.trimWhiteSpaces(userName);
 
             if (UserNamePolicyUtil.isUserExists(userName) || (UserNamePolicyUtil.isUserNameReserved(userName))) {
                 String baseName = userName;
                 boolean userNameGenerated = false;
-                for (int i = 1; i < 10; i++) {
+                for (int i = 1; i < 100; i++) {
                     userName = generateNextName(baseName, null, middleName, i);
                     if (UserNameGenerationUtil.isUserNameExistingOrReserved(userName))
                         continue;
@@ -87,12 +87,12 @@ public class VEGUserName implements UserNamePolicy{
                     break;
                 }
                 if (!userNameGenerated)
-                    throw  new UserNameGenerationException("Failed To Generate User Name", "GENERATEUSERNAMEFAILED");
+                    throw  new UserNameGenerationException("Failed To Generate User Name", "GENERATE_USER_NAME_FAILED");
             }
         }
         else if (isFirstName && !isMiddleName) {
             String firstInitial = firstName.substring(0, 1);
-            userName = lastName.concat(firstInitial);
+            userName = (lastName.concat(".")).concat(firstInitial);
             userName = UserNameGenerationUtil.trimWhiteSpaces(userName);
 
             if (UserNamePolicyUtil.isUserExists(userName) || (UserNamePolicyUtil.isUserNameReserved(userName))) {
@@ -106,7 +106,7 @@ public class VEGUserName implements UserNamePolicy{
                     break;
                 }
                 if (!userNameGenerated)
-                    throw  new UserNameGenerationException("Failed To Generate User Name", "GENERATEUSERNAMEFAILED");
+                    throw  new UserNameGenerationException("Failed To Generate User Name", "GENERATE_USER_NAME_FAILED");
             }
         }
         else {
@@ -124,10 +124,9 @@ public class VEGUserName implements UserNamePolicy{
                     break;
                 }
                 if (!userNameGenerated)
-                    throw  new UserNameGenerationException("Failed To Generate User Name", "GENERATEUSERNAMEFAILED");
+                    throw  new UserNameGenerationException("Failed To Generate User Name", "GENERATE_USER_NAME_FAILED");
             }
         }
-
         return userName;
     }
 
@@ -180,16 +179,16 @@ public class VEGUserName implements UserNamePolicy{
 
     private String generateNextName (String baseName, String firstName, String middleName, int index) {
         if ((firstName != null && middleName != null) || (firstName == null && middleName != null)) {
-            if (index > 1)
+            if (index == 1)
                 return baseName.concat(middleName.substring(1,2));
             else
-                return baseName.concat(Integer.toString(index));
+                return (baseName.concat(middleName.substring(1,2))).concat(Integer.toString(index));
         }
         else if (firstName != null && middleName == null) {
-            if (index > 1)
+            if (index == 1)
                 return baseName.concat(firstName.substring(1,2));
             else
-                return baseName.concat(Integer.toString(index));
+                return (baseName.concat(firstName.substring(1,2))).concat(Integer.toString(index));
         }
         else
             return baseName.concat(Integer.toString(index));
@@ -211,11 +210,35 @@ public class VEGUserName implements UserNamePolicy{
             if (inputString.contains(s))
                 return true;
         }
+
         return false;
     }
 
     @Override
     public boolean isUserNameValid(String s, Map<String, String> map) {
+        String firstName = map.get("First Name");
+        String lastName = map.get("Last Name");
+        String middleName = map.get("Middle Name");
+
+        boolean isFirstName = (firstName == null || firstName.length() == 0) ? false : true;
+        boolean isMiddleName = (middleName == null || middleName.length() == 0) ? false : true;
+
+        if (isFirstName) {
+            if (isContainInvalidCharacters(firstName))
+                return false;
+        }
+
+        if (isMiddleName) {
+            if (isContainInvalidCharacters(middleName))
+                return false;
+        }
+
+        if (lastName == null || lastName.length() == 0)
+            return false;
+
+        if (isContainInvalidCharacters(lastName))
+            return false;
+
         return true;
     }
 
