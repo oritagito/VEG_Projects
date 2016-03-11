@@ -29,7 +29,21 @@ public class VEGUserName implements UserNamePolicy{
         boolean isFirstName = (firstName == null || firstName.length() == 0) ? false : true;
         boolean isMiddleName = (middleName == null || middleName.length() == 0) ? false : true;
 
-        if (lastName == null || lastName.length() == 0) {
+        if (isFirstName) {
+            if (isContainInvalidCharacters(firstName)) {
+                UserNameGenerationException exception = new UserNameGenerationException("First Name is Invalid", "INVALID_FIRST_NAME");
+                throw exception;
+            }
+        }
+
+        if (isMiddleName) {
+            if (isContainInvalidCharacters(middleName)) {
+                UserNameGenerationException exception = new UserNameGenerationException("Middle Name is Invalid", "INVALID_MIDDLE_NAME");
+                throw exception;
+            }
+        }
+
+        if (isContainInvalidCharacters(lastName)) {
             UserNameGenerationException exception = new UserNameGenerationException("Last Name is Invalid", "INVALID_LAST_NAME");
             throw exception;
         }
