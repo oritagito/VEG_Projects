@@ -29,31 +29,16 @@ public class VEGUserName implements UserNamePolicy{
         boolean isFirstName = (firstName == null || firstName.length() == 0) ? false : true;
         boolean isMiddleName = (middleName == null || middleName.length() == 0) ? false : true;
 
-        if (isFirstName) {
-            if (isContainInvalidCharacters(firstName)) {
-                UserNameGenerationException exception = new UserNameGenerationException("First Name is Invalid", "INVALID_FIRST_NAME");
-                throw exception;
-            }
-            firstName = cyrillicToLatinResult(firstName.toUpperCase());
-        }
-
-        if (isMiddleName) {
-            if (isContainInvalidCharacters(middleName)) {
-                UserNameGenerationException exception = new UserNameGenerationException("Middle Name is Invalid", "INVALID_MIDDLE_NAME");
-                throw exception;
-            }
-            middleName = cyrillicToLatinResult(middleName.toUpperCase());
-        }
-
-        if (isContainInvalidCharacters(lastName)) {
+        if (lastName == null || lastName.length() == 0) {
             UserNameGenerationException exception = new UserNameGenerationException("Last Name is Invalid", "INVALID_LAST_NAME");
             throw exception;
         }
+
         lastName = cyrillicToLatinResult(lastName.toUpperCase());
 
         if (isFirstName && isMiddleName) {
-            String firstInitial = firstName.substring(0, 1);
-            String middleInitial = middleName.substring(0, 1);
+            String firstInitial = cyrillicToLatinResult((firstName.substring(0, 1)).toUpperCase());
+            String middleInitial = cyrillicToLatinResult((middleName.substring(0, 1)).toUpperCase());
             userName = ((lastName.concat(".")).concat(firstInitial)).concat(middleInitial);
             userName = UserNameGenerationUtil.trimWhiteSpaces(userName);
 
@@ -72,7 +57,7 @@ public class VEGUserName implements UserNamePolicy{
             }
         }
         else if (!isFirstName && isMiddleName) {
-            String middleInitial = middleName.substring(0, 1);
+            String middleInitial = cyrillicToLatinResult((middleName.substring(0, 1)).toUpperCase());
             userName = (lastName.concat(".")).concat(middleInitial);
             userName = UserNameGenerationUtil.trimWhiteSpaces(userName);
 
@@ -91,7 +76,7 @@ public class VEGUserName implements UserNamePolicy{
             }
         }
         else if (isFirstName && !isMiddleName) {
-            String firstInitial = firstName.substring(0, 1);
+            String firstInitial = cyrillicToLatinResult((firstName.substring(0, 1)).toUpperCase());
             userName = (lastName.concat(".")).concat(firstInitial);
             userName = UserNameGenerationUtil.trimWhiteSpaces(userName);
 
@@ -116,7 +101,7 @@ public class VEGUserName implements UserNamePolicy{
             if (UserNamePolicyUtil.isUserExists(userName) || (UserNamePolicyUtil.isUserNameReserved(userName))) {
                 String baseName = userName;
                 boolean userNameGenerated = false;
-                for (int i = 1; i < 10; i++) {
+                for (int i = 1; i < 100; i++) {
                     userName = generateNextName(baseName, null, null, i);
                     if (UserNameGenerationUtil.isUserNameExistingOrReserved(userName))
                         continue;
@@ -171,24 +156,25 @@ public class VEGUserName implements UserNamePolicy{
 
     private String cyrillicToLatinResult(String s){
         StringBuilder sb = new StringBuilder(s.length()*2);
-        for(char c: s.toCharArray()){
+        for(char c : s.toCharArray()){
             sb.append(cyrillicToLatinMapping(c));
         }
         return sb.toString();
     }
 
     private String generateNextName (String baseName, String firstName, String middleName, int index) {
+
         if ((firstName != null && middleName != null) || (firstName == null && middleName != null)) {
             if (index == 1)
-                return baseName.concat(middleName.substring(1,2));
+                return baseName.concat(cyrillicToLatinResult((middleName.substring(1, 2)).toUpperCase()));
             else
-                return (baseName.concat(middleName.substring(1,2))).concat(Integer.toString(index));
+                return baseName.concat(cyrillicToLatinResult((middleName.substring(1, 2)).toUpperCase())).concat(Integer.toString(index));
         }
         else if (firstName != null && middleName == null) {
             if (index == 1)
-                return baseName.concat(firstName.substring(1,2));
+                return baseName.concat(cyrillicToLatinResult((firstName.substring(1, 2)).toUpperCase()));
             else
-                return (baseName.concat(firstName.substring(1,2))).concat(Integer.toString(index));
+                return baseName.concat(cyrillicToLatinResult((firstName.substring(1, 2)).toUpperCase())).concat(Integer.toString(index));
         }
         else
             return baseName.concat(Integer.toString(index));
