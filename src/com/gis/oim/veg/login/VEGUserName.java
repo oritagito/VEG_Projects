@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 public class VEGUserName implements UserNamePolicy{
 
     private Logger logger = Logger.getLogger(this.getClass().getName());
+    private String s;
 
     @Override
     public String getUserNameFromPolicy(Map<String, String> map) throws UserNameGenerationException {
@@ -31,20 +32,20 @@ public class VEGUserName implements UserNamePolicy{
 
         if (isFirstName) {
             if (isContainInvalidCharacters(firstName)) {
-                UserNameGenerationException exception = new UserNameGenerationException("First Name is Invalid", "INVALID_FIRST_NAME");
+                UserNameGenerationException exception = new UserNameGenerationException("First Name is Invalid", "INVALIDFIRSTNAME");
                 throw exception;
             }
         }
 
         if (isMiddleName) {
             if (isContainInvalidCharacters(middleName)) {
-                UserNameGenerationException exception = new UserNameGenerationException("Middle Name is Invalid", "INVALID_MIDDLE_NAME");
+                UserNameGenerationException exception = new UserNameGenerationException("Middle Name is Invalid", "INVALIDMIDDLENAME");
                 throw exception;
             }
         }
 
         if (isContainInvalidCharacters(lastName)) {
-            UserNameGenerationException exception = new UserNameGenerationException("Last Name is Invalid", "INVALID_LAST_NAME");
+            UserNameGenerationException exception = new UserNameGenerationException("Last Name is Invalid", "INVALIDLASTNAME");
             throw exception;
         }
 
@@ -67,7 +68,7 @@ public class VEGUserName implements UserNamePolicy{
                     break;
                 }
                 if (!userNameGenerated)
-                    throw  new UserNameGenerationException("Failed To Generate User Name", "GENERATE_USER_NAME_FAILED");
+                    throw  new UserNameGenerationException("Failed To Generate User Name", "GENERATEUSERNAMEFAILED");
             }
         }
         else if (!isFirstName && isMiddleName) {
@@ -86,7 +87,7 @@ public class VEGUserName implements UserNamePolicy{
                     break;
                 }
                 if (!userNameGenerated)
-                    throw  new UserNameGenerationException("Failed To Generate User Name", "GENERATE_USER_NAME_FAILED");
+                    throw  new UserNameGenerationException("Failed To Generate User Name", "GENERATEUSERNAMEFAILED");
             }
         }
         else if (isFirstName && !isMiddleName) {
@@ -105,7 +106,7 @@ public class VEGUserName implements UserNamePolicy{
                     break;
                 }
                 if (!userNameGenerated)
-                    throw  new UserNameGenerationException("Failed To Generate User Name", "GENERATE_USER_NAME_FAILED");
+                    throw  new UserNameGenerationException("Failed To Generate User Name", "GENERATEUSERNAMEFAILED");
             }
         }
         else {
@@ -123,7 +124,7 @@ public class VEGUserName implements UserNamePolicy{
                     break;
                 }
                 if (!userNameGenerated)
-                    throw  new UserNameGenerationException("Failed To Generate User Name", "GENERATE_USER_NAME_FAILED");
+                    throw  new UserNameGenerationException("Failed To Generate User Name", "GENERATEUSERNAMEzFAILED");
             }
         }
         return userName;
@@ -169,6 +170,7 @@ public class VEGUserName implements UserNamePolicy{
     }
 
     private String cyrillicToLatinResult(String s){
+        this.s = s;
         StringBuilder sb = new StringBuilder(s.length()*2);
         for(char c : s.toCharArray()){
             sb.append(cyrillicToLatinMapping(c));
