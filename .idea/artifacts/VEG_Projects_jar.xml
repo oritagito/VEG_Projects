@@ -5,7 +5,7 @@
       <element id="archive" name="VEG_Projects.zip">
         <element id="directory" name="lib">
           <element id="directory" name="lib">
-            <element id="library" level="project" name="iam-consoles-common" />
+            <element id="file-copy" path="$PROJECT_DIR$/lib/MSADConnection.jar" />
           </element>
           <element id="archive" name="VEG_Projects.jar">
             <element id="module-output" name="VEG_Projects" />
