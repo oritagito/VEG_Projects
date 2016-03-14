@@ -9,13 +9,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Logger;
 
-/**
- * Created by vasilev-e on 09.03.2016.
- */
 public class VEGUserName implements UserNamePolicy{
 
     private Logger logger = Logger.getLogger(this.getClass().getName());
-    private String s;
 
     @Override
     public String getUserNameFromPolicy(Map<String, String> map) throws UserNameGenerationException {
@@ -27,27 +23,17 @@ public class VEGUserName implements UserNamePolicy{
         String lastName = map.get("Last Name");
         String middleName = map.get("Middle Name");
 
-        boolean isFirstName = (firstName == null || firstName.length() == 0) ? false : true;
-        boolean isMiddleName = (middleName == null || middleName.length() == 0) ? false : true;
+        boolean isFirstName = !(firstName == null || firstName.length() == 0);
+        boolean isMiddleName = !(middleName == null || middleName.length() == 0);
 
-        if (isFirstName) {
-            if (isContainInvalidCharacters(firstName)) {
-                UserNameGenerationException exception = new UserNameGenerationException("First Name is Invalid", "INVALIDFIRSTNAME");
-                throw exception;
-            }
-        }
+        if (isFirstName) if (isContainInvalidCharacters(firstName))
+            throw new UserNameGenerationException("First Name is Invalid", "INVALIDFIRSTNAME");
 
-        if (isMiddleName) {
-            if (isContainInvalidCharacters(middleName)) {
-                UserNameGenerationException exception = new UserNameGenerationException("Middle Name is Invalid", "INVALIDMIDDLENAME");
-                throw exception;
-            }
-        }
+        if (isMiddleName) if (isContainInvalidCharacters(middleName))
+            throw new UserNameGenerationException("Middle Name is Invalid", "INVALIDMIDDLENAME");
 
-        if (isContainInvalidCharacters(lastName)) {
-            UserNameGenerationException exception = new UserNameGenerationException("Last Name is Invalid", "INVALIDLASTNAME");
-            throw exception;
-        }
+        if (isContainInvalidCharacters(lastName))
+            throw new UserNameGenerationException("Last Name is Invalid", "INVALIDLASTNAME");
 
         lastName = cyrillicToLatinResult(lastName.toUpperCase());
 
@@ -71,60 +57,60 @@ public class VEGUserName implements UserNamePolicy{
                     throw  new UserNameGenerationException("Failed To Generate User Name", "GENERATEUSERNAMEFAILED");
             }
         }
-        else if (!isFirstName && isMiddleName) {
-            String middleInitial = cyrillicToLatinResult((middleName.substring(0, 1)).toUpperCase());
-            userName = (lastName.concat(".")).concat(middleInitial);
-            userName = UserNameGenerationUtil.trimWhiteSpaces(userName);
-
-            if (UserNamePolicyUtil.isUserExists(userName) || (UserNamePolicyUtil.isUserNameReserved(userName))) {
-                String baseName = userName;
-                boolean userNameGenerated = false;
-                for (int i = 1; i < 100; i++) {
-                    userName = generateNextName(baseName, null, middleName, i);
-                    if (UserNameGenerationUtil.isUserNameExistingOrReserved(userName))
-                        continue;
-                    userNameGenerated = true;
-                    break;
-                }
-                if (!userNameGenerated)
-                    throw  new UserNameGenerationException("Failed To Generate User Name", "GENERATEUSERNAMEFAILED");
-            }
-        }
-        else if (isFirstName && !isMiddleName) {
-            String firstInitial = cyrillicToLatinResult((firstName.substring(0, 1)).toUpperCase());
-            userName = (lastName.concat(".")).concat(firstInitial);
-            userName = UserNameGenerationUtil.trimWhiteSpaces(userName);
-
-            if (UserNamePolicyUtil.isUserExists(userName) || (UserNamePolicyUtil.isUserNameReserved(userName))) {
-                String baseName = userName;
-                boolean userNameGenerated = false;
-                for (int i = 1; i < 10; i++) {
-                    userName = generateNextName(baseName, firstName, null, i);
-                    if (UserNameGenerationUtil.isUserNameExistingOrReserved(userName))
-                        continue;
-                    userNameGenerated = true;
-                    break;
-                }
-                if (!userNameGenerated)
-                    throw  new UserNameGenerationException("Failed To Generate User Name", "GENERATEUSERNAMEFAILED");
-            }
-        }
         else {
-            userName = lastName;
-            userName = UserNameGenerationUtil.trimWhiteSpaces(userName);
+            if (!isFirstName && isMiddleName) {
+                String middleInitial = cyrillicToLatinResult((middleName.substring(0, 1)).toUpperCase());
+                userName = (lastName.concat(".")).concat(middleInitial);
+                userName = UserNameGenerationUtil.trimWhiteSpaces(userName);
 
-            if (UserNamePolicyUtil.isUserExists(userName) || (UserNamePolicyUtil.isUserNameReserved(userName))) {
-                String baseName = userName;
-                boolean userNameGenerated = false;
-                for (int i = 1; i < 100; i++) {
-                    userName = generateNextName(baseName, null, null, i);
-                    if (UserNameGenerationUtil.isUserNameExistingOrReserved(userName))
-                        continue;
-                    userNameGenerated = true;
-                    break;
+                if (UserNamePolicyUtil.isUserExists(userName) || (UserNamePolicyUtil.isUserNameReserved(userName))) {
+                    String baseName = userName;
+                    boolean userNameGenerated = false;
+                    for (int i = 1; i < 100; i++) {
+                        userName = generateNextName(baseName, null, middleName, i);
+                        if (UserNameGenerationUtil.isUserNameExistingOrReserved(userName))
+                            continue;
+                        userNameGenerated = true;
+                        break;
+                    }
+                    if (!userNameGenerated)
+                        throw new UserNameGenerationException("Failed To Generate User Name", "GENERATEUSERNAMEFAILED");
                 }
-                if (!userNameGenerated)
-                    throw  new UserNameGenerationException("Failed To Generate User Name", "GENERATEUSERNAMEzFAILED");
+            } else if (isFirstName && !isMiddleName) {
+                String firstInitial = cyrillicToLatinResult((firstName.substring(0, 1)).toUpperCase());
+                userName = (lastName.concat(".")).concat(firstInitial);
+                userName = UserNameGenerationUtil.trimWhiteSpaces(userName);
+
+                if (UserNamePolicyUtil.isUserExists(userName) || (UserNamePolicyUtil.isUserNameReserved(userName))) {
+                    String baseName = userName;
+                    boolean userNameGenerated = false;
+                    for (int i = 1; i < 10; i++) {
+                        userName = generateNextName(baseName, firstName, null, i);
+                        if (UserNameGenerationUtil.isUserNameExistingOrReserved(userName))
+                            continue;
+                        userNameGenerated = true;
+                        break;
+                    }
+                    if (!userNameGenerated)
+                        throw new UserNameGenerationException("Failed To Generate User Name", "GENERATEUSERNAMEFAILED");
+                }
+            } else {
+                userName = lastName;
+                userName = UserNameGenerationUtil.trimWhiteSpaces(userName);
+
+                if (UserNamePolicyUtil.isUserExists(userName) || (UserNamePolicyUtil.isUserNameReserved(userName))) {
+                    String baseName = userName;
+                    boolean userNameGenerated = false;
+                    for (int i = 1; i < 100; i++) {
+                        userName = generateNextName(baseName, null, null, i);
+                        if (UserNameGenerationUtil.isUserNameExistingOrReserved(userName))
+                            continue;
+                        userNameGenerated = true;
+                        break;
+                    }
+                    if (!userNameGenerated)
+                        throw new UserNameGenerationException("Failed To Generate User Name", "GENERATEUSERNAMEzFAILED");
+                }
             }
         }
         return userName;
@@ -170,7 +156,6 @@ public class VEGUserName implements UserNamePolicy{
     }
 
     private String cyrillicToLatinResult(String s){
-        this.s = s;
         StringBuilder sb = new StringBuilder(s.length()*2);
         for(char c : s.toCharArray()){
             sb.append(cyrillicToLatinMapping(c));
@@ -222,8 +207,8 @@ public class VEGUserName implements UserNamePolicy{
         String lastName = map.get("Last Name");
         String middleName = map.get("Middle Name");
 
-        boolean isFirstName = (firstName == null || firstName.length() == 0) ? false : true;
-        boolean isMiddleName = (middleName == null || middleName.length() == 0) ? false : true;
+        boolean isFirstName = !(firstName == null || firstName.length() == 0);
+        boolean isMiddleName = !(middleName == null || middleName.length() == 0);
 
         if (isFirstName) {
             if (isContainInvalidCharacters(firstName))
